@@ -13,3 +13,4 @@ path = "src/inp.rs"
 [dependencies]
 regex = "1"
 petgraph = "0.5.1"
+itertools = "0.13.0"
