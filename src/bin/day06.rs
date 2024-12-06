@@ -1,6 +1,7 @@
 use std::vec::Vec;
 use std::collections::HashSet;
 use std::ops::Add;
+use std::thread;
 
 const DIRECTIONS: [Point; 4] = [Point{x:0,y:-1}, Point{x:1, y:0}, Point{x: 0, y: 1}, Point{x:-1, y:0}];
 
@@ -112,20 +113,25 @@ fn solve_part2(input: &Vec<String>) -> i32 {
   let xsize = input[0].len() as i32;
   let ysize = input.len() as i32;
   let (obstacles, start_position) = get_obstacles(input);
-  let mut new_obstacles = obstacles.clone();
   let mut total = 0;
   for y in 0..ysize {
+    println!("{}", y);
+    let mut children = vec![];
     for x in 0..xsize {
-      println!("({},{})", x, y);
-      let curr_point = Point{x:x, y:y};
+      let mut new_obstacles = obstacles.clone();
+      let curr_point = Point{x, y};
       if obstacles.contains(&curr_point) || start_position == curr_point {
         continue;
       }
       new_obstacles.insert(curr_point);
-      if do_patrol(&new_obstacles, &start_position, (xsize, ysize)) == GuardResult::LOOPED {
+      children.push(thread::spawn(move || {
+        do_patrol(&new_obstacles, &start_position, (xsize, ysize))
+      }));
+    }
+    for child in children {
+      if child.join().unwrap() == GuardResult::LOOPED {
         total += 1;
       }
-      new_obstacles.remove(&curr_point);
     }
   }
   total
