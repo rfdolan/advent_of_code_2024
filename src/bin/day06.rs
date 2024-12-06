@@ -80,21 +80,18 @@ fn do_patrol(obstacles: &HashSet<Point>, start_position: &Point, grid_size: (i32
   }
 }
 
-// Solution for part 1
-fn solve_part1(input: &Vec<String>) -> i32 {
-  let xsize = input[0].len() as i32;
-  let ysize = input.len() as i32;
+fn get_path(obstacles: &HashSet<Point>, size: (i32, i32), guard_position: &Point) -> HashSet<Point> {
   let mut visited = HashSet::new();
-  let (obstacles, mut guard_position) = get_obstacles(input);
+  let mut guard_position = *guard_position;
   visited.insert(guard_position);
 
   let mut guard_direction = 0;
   loop {
-    if guard_position.x >= xsize ||
+    if guard_position.x >= size.0 ||
        guard_position.x < 0 ||
-       guard_position.y >= ysize ||
+       guard_position.y >= size.1 ||
        guard_position.y < 0 {
-      break;
+        return visited;
     }
     visited.insert(guard_position);
     let mut next_position = guard_position + DIRECTIONS[guard_direction];
@@ -104,8 +101,15 @@ fn solve_part1(input: &Vec<String>) -> i32 {
     }
     guard_position = next_position;
   }
-  visited.len() as i32
+}
 
+// Solution for part 1
+fn solve_part1(input: &Vec<String>) -> i32 {
+  let xsize = input[0].len() as i32;
+  let ysize = input.len() as i32;
+  let (obstacles, guard_position) = get_obstacles(input);
+  
+  get_path(&obstacles, (xsize, ysize), &guard_position).len() as i32
 }
 
 // Solution for part 2
@@ -113,17 +117,15 @@ fn solve_part2(input: &Vec<String>) -> i32 {
   let xsize = input[0].len() as i32;
   let ysize = input.len() as i32;
   let (obstacles, start_position) = get_obstacles(input);
+  let visited = get_path(&obstacles, (xsize, ysize), &start_position);
   let mut total = 0;
-  for y in 0..ysize {
-    println!("{}", y);
     let mut children = vec![];
-    for x in 0..xsize {
+    for cell in visited {
       let mut new_obstacles = obstacles.clone();
-      let curr_point = Point{x, y};
-      if obstacles.contains(&curr_point) || start_position == curr_point {
+      if start_position == cell {
         continue;
       }
-      new_obstacles.insert(curr_point);
+      new_obstacles.insert(cell);
       children.push(thread::spawn(move || {
         do_patrol(&new_obstacles, &start_position, (xsize, ysize))
       }));
@@ -133,9 +135,7 @@ fn solve_part2(input: &Vec<String>) -> i32 {
         total += 1;
       }
     }
-  }
   total
-
 }
 
 #[cfg(test)]
