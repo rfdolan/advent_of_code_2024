@@ -14,18 +14,18 @@ fn test_recursive(target: i64, nums: &Vec<i64>, useor: bool) -> bool {
   if nums[nums.len() - 1] >= target {
     return false;
   }
-  let mut numclone = nums.clone();
-  let num1 = numclone.pop().unwrap();
-  let num2 = numclone.pop().unwrap();
+  let num1 = nums[nums.len() - 1];
+  let num2 = nums[nums.len() - 2];
   let addresult = num1 + num2;
-  let mut addvec = numclone.clone();
-  addvec.push(addresult);
   let mulresult = num1 * num2;
-  let mut mulvec = numclone.clone();
+
+  let mut addvec = nums[..nums.len() - 2].to_vec();
+  addvec.push(addresult);
+  let mut mulvec = nums[..nums.len() - 2].to_vec();
   mulvec.push(mulresult);
   if useor {
     let orresult = (num1.to_string() + &num2.to_string()).parse::<i64>().unwrap();
-    let mut orvec = numclone.clone();
+    let mut orvec = nums[..nums.len() - 2].to_vec();
     orvec.push(orresult);
     return test_recursive(target, &addvec, true) || 
            test_recursive(target, &mulvec, true) || 
