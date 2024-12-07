@@ -11,6 +11,9 @@ fn test_recursive(target: i64, nums: &Vec<i64>, useor: bool) -> bool {
   if nums.len() == 1 {
     return nums[0] == target;
   }
+  if nums[nums.len() - 1] >= target {
+    return false;
+  }
   let mut numclone = nums.clone();
   let num1 = numclone.pop().unwrap();
   let num2 = numclone.pop().unwrap();
