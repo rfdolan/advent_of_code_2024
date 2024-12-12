@@ -81,21 +81,22 @@ fn solve_part1(input: &Vec<String>) -> i32 {
   })
 }
 
+// The number of sides is equal to the number of corners, which are easier to
+// find.
 fn get_num_sides(region: &HashSet<Point>) -> i32 {
   let start = region.iter().next().unwrap().clone();
   let mut corners = 0;
-  let mut to_visit = Vec::new();
-  let mut visited = HashSet::new();
+  let mut to_visit = Vec::with_capacity(region.len());
+  let mut visited = HashSet::with_capacity(region.len());
   to_visit.push(start);
+  visited.insert(start);
 
-  while !to_visit.is_empty() {
-    let curr = to_visit.pop().unwrap();
-    visited.insert(curr);
-    let neighbors = curr.neighbors();
-    let neighbors = neighbors
-      .iter()
-      .filter(|&x| region.contains(&x))
-      .collect::<Vec<_>>();
+  while let Some(curr) = to_visit.pop() {
+    let neighbors: Vec<_> = curr
+      .neighbors()
+      .into_iter()
+      .filter(|x| region.contains(x))
+      .collect();
 
     // We are alone in this cold, cruel world...
     if neighbors.is_empty() {
@@ -103,35 +104,49 @@ fn get_num_sides(region: &HashSet<Point>) -> i32 {
     }
 
     for &neighbor in neighbors.iter() {
-      if !visited.contains(&neighbor) && !to_visit.contains(&neighbor) {
-        to_visit.push(*neighbor);
+      if visited.insert(neighbor) {
+        to_visit.push(neighbor);
       }
     }
 
     // End point, add 2 for its corners.
+    // ex.
+    // +---+
+    // | A |
+    // | A |
     if neighbors.len() == 1 {
       corners += 2;
       continue;
     }
     if neighbors.len() == 2 {
       // Don't add anything for a straight line
+      // ex.
+      // -------
+      //  A A A
+      // -------
       if neighbors[0].x == neighbors[1].x || neighbors[0].y == neighbors[1].y {
         continue;
       }
       // We have an exterior corner
+      // ex.
+      // +-----
+      // | A A
+      // | A ?
       corners += 1;
     }
 
     // Check interior corners and t-bars
     for (i, n1) in neighbors.iter().enumerate() {
       for n2 in neighbors[i..].iter() {
-        let p1 = Point::new(n1.x, n2.y);
-        let p2 = Point::new(n2.x, n1.y);
-        if p1 != curr && !region.contains(&p1) {
-          corners += 1;
-        }
-        if p2 != curr && !region.contains(&p2) {
-          corners += 1;
+        // Finding interior corners
+        // ----------
+        // A   A   A
+        // --+   +--
+        //   | A |
+        for point in [Point::new(n1.x, n2.y), Point::new(n2.x, n1.y)] {
+          if point != curr && !region.contains(&point) {
+            corners += 1;
+          }
         }
       }
     }
@@ -146,12 +161,6 @@ fn solve_part2(input: &Vec<String>) -> i32 {
   regions.iter().fold(0, |acc, region| {
     let area = region.len() as i32;
     let num_sides = get_num_sides(&region);
-    println!(
-      "Area: {}, Num Sides: {} = {}",
-      area,
-      num_sides,
-      area * num_sides
-    );
     acc + area * num_sides
   })
 }
