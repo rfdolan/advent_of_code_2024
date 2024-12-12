@@ -1,3 +1,3 @@
 // src/lib.rs
-pub mod point;
 pub mod inp;
+pub mod point;

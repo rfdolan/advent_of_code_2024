@@ -17,7 +17,9 @@ pub fn parse_file(name: &str) -> Vec<String> {
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
+where
+  P: AsRef<Path>,
+{
   let file = File::open(filename)?;
   Ok(io::BufReader::new(file).lines())
 }
