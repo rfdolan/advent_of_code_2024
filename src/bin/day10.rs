@@ -1,25 +1,9 @@
+use advent_of_code_2024::{inp, point::Point};
 use std::vec::Vec;
 use std::collections::{HashMap, HashSet};
-use std::ops::Add;
 
 const RADIX: u32 = 10;
 const DIRECTIONS: [Point; 4] = [Point{x:0,y:-1}, Point{x:1, y:0}, Point{x: 0, y: 1}, Point{x:-1, y:0}];
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-struct Point {
-  x: i32,
-  y: i32
-}
-
-impl Add for Point {
-  type Output = Self;
-  fn add(self, other: Self) -> Self {
-    Self { 
-      x: self.x + other.x,
-      y: self.y + other.y,
-    }
-  }
-}
 
 fn main(){
   let vec = inp::parse_file("inputs/day10.txt");
@@ -33,7 +17,7 @@ fn parse_input(input: &Vec<String>) -> (Vec<Point>, HashMap<Point, i32>) {
   let mut trailheads = Vec::new();
   for (y, line) in input.iter().enumerate() {
     for (x, height) in line.chars().map(|x| x.to_digit(RADIX).unwrap() as i32).enumerate() {
-      let position = Point{x: x as i32, y: y as i32};
+      let position = Point::new( x as i32, y as i32);
       map.insert(position, height);
       if height == 0 {
         trailheads.push(position);

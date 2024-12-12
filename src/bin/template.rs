@@ -1,3 +1,4 @@
+use advent_of_code_2024::inp;
 use std::vec::Vec;
 
 fn main(){

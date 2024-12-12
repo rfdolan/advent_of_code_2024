@@ -5,8 +5,8 @@ authors = ["raymond <dolanraymond416@gmail.com>"]
 edition = "2018"
 
 [lib]
-name = "inp"
-path = "src/inp.rs"
+name = "advent_of_code_2024"
+path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

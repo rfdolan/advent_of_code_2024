@@ -1,25 +1,9 @@
+use advent_of_code_2024::{inp, point::Point};
 use std::vec::Vec;
 use std::collections::HashSet;
-use std::ops::Add;
 use std::thread;
 
 const DIRECTIONS: [Point; 4] = [Point{x:0,y:-1}, Point{x:1, y:0}, Point{x: 0, y: 1}, Point{x:-1, y:0}];
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-struct Point {
-  x: i32,
-  y: i32
-}
-
-impl Add for Point {
-  type Output = Self;
-  fn add(self, other: Self) -> Self {
-    Self { 
-      x: self.x + other.x,
-      y: self.y + other.y,
-    }
-  }
-}
 
 #[derive(PartialEq)]
 enum GuardResult {
@@ -35,15 +19,15 @@ fn main(){
 }
 
 fn get_obstacles(input: &Vec<String>) -> (HashSet<Point>, Point) {
-  let mut guard_position = Point{x:-1, y:-1};
+  let mut guard_position = Point::new(-1, -1);
   let mut obstacles = HashSet::new();
   for (y, line) in input.iter().enumerate() {
     for (x, space) in line.chars().enumerate() {
       if space == '#' {
-        obstacles.insert(Point{x:x as i32, y: y as i32});
+        obstacles.insert(Point::new(x as i32,  y as i32));
       }
       if space == '^' {
-        guard_position = Point{x: x as i32, y: y as i32};
+        guard_position = Point::new( x as i32,  y as i32);
       }
     }
   }

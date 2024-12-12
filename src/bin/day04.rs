@@ -1,24 +1,8 @@
+use advent_of_code_2024::{inp, point::Point};
 use std::vec::Vec;
-use std::ops::Add;
 use std::collections::HashMap;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-struct Point {
-  x: i32,
-  y: i32
-}
-
-impl Add for Point {
-  type Output = Self;
-  fn add(self, other: Self) -> Self {
-    Self { 
-      x: self.x + other.x,
-      y: self.y + other.y,
-    }
-  }
-}
-
-const DIRECTIONS: [Point; 8] = [Point{x: 0, y: 1},Point{x: 0, y: -1},Point{x: 1, y: 1},Point{x: 1, y: 0},Point{x: 1, y: -1},Point{x: -1, y: 1},Point{x: -1, y: 0},Point{x: -1, y: -1}];
+const DIRECTIONS: [Point; 8] = [Point{x:0,y:1},Point{x: 0, y: -1},Point{x: 1, y: 1},Point{x: 1, y: 0},Point{x: 1, y: -1},Point{x: -1, y: 1},Point{x: -1, y: 0},Point{x: -1, y: -1}];
 const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
 
 fn main(){
@@ -33,7 +17,7 @@ fn build_map(input: &Vec<String>) -> (HashMap<Point, char>, usize) {
   let mut xsize = 0;
   for (y, line) in input.iter().enumerate() {
     for (x, character) in line.chars().enumerate() {
-      map.insert(Point{x: x as i32, y: y as i32}, character);
+      map.insert(Point::new( x as i32,  y as i32), character);
       if x > xsize {
         xsize = x+1;
       }
@@ -65,7 +49,7 @@ fn solve_part1(input: &Vec<String>) -> i32 {
   let mut total_xmas = 0;
   for y in 0..input.len() {
     for x in 0..xsize {
-      let curr_point = Point{x:x as i32, y:y as i32};
+      let curr_point = Point::new(x as i32, y as i32);
       if *map.get(&curr_point).unwrap() == 'X' {
         for direction in DIRECTIONS {
           if find_xmas_in_direction(&map, &curr_point, &direction) {
@@ -79,10 +63,10 @@ fn solve_part1(input: &Vec<String>) -> i32 {
 }
 
 fn is_x_mas(map: &HashMap<Point, char>, start: &Point) -> Option<bool> {
-  let upleft = map.get(&(*start + Point{x: -1, y:-1})) ?;
-  let upright = map.get(&(*start + Point{x: 1, y:-1})) ?;
-  let downleft = map.get(&(*start + Point{x: -1, y:1})) ?;
-  let downright = map.get(&(*start + Point{x: 1, y:1})) ?;
+  let upleft = map.get(&(*start + Point::new( -1, -1))) ?;
+  let upright = map.get(&(*start + Point::new( 1,-1))) ?;
+  let downleft = map.get(&(*start + Point::new( -1,1))) ?;
+  let downright = map.get(&(*start + Point::new( 1,1))) ?;
   let mut diag1_good = false;
   let mut diag2_good = false;
   if (*upleft == 'M' && *downright == 'S') || (*upleft == 'S' && *downright == 'M') {
@@ -102,7 +86,7 @@ fn solve_part2(input: &Vec<String>) -> i32 {
   let mut total_x_mas = 0;
   for y in 0..input.len() {
     for x in 0..xsize {
-      let curr_point = Point{x:x as i32, y:y as i32};
+      let curr_point = Point::new(x as i32,y as i32);
       if *map.get(&curr_point).unwrap() == 'A' {
        match is_x_mas(&map, &curr_point) {
         Some(found) => {

@@ -1,33 +1,7 @@
+use advent_of_code_2024::{inp, point::Point};
 use std::vec::Vec;
-use std::ops::{Sub,Add};
 use std::collections::{HashMap, HashSet};
 use std::collections::hash_map::Entry;
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-struct Point {
-  x: i32,
-  y: i32
-}
-
-impl Add for Point {
-  type Output = Self;
-  fn add(self, other: Self) -> Self {
-    Self { 
-      x: self.x + other.x,
-      y: self.y + other.y,
-    }
-  }
-}
-
-impl Sub for Point {
-  type Output = Self;
-  fn sub(self, other: Self) -> Self {
-    Self { 
-      x: self.x - other.x,
-      y: self.y - other.y,
-    }
-  }
-}
 
 fn main(){
   let vec = inp::parse_file("inputs/day08.txt");
@@ -41,7 +15,7 @@ fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point>> {
   for (y, line) in input.iter().enumerate() {
     for (x, character) in line.chars().enumerate() {
       if character == '.' { continue;}
-      let point = Point{x: x as i32, y: y as i32};
+      let point = Point::new( x as i32, y as i32);
       match antennas.entry(character) {
         Entry::Occupied(mut entry) => entry.get_mut().push(point),
         Entry::Vacant(entry) => {
