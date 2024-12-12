@@ -1,7 +1,7 @@
 use advent_of_code_2024::inp;
 use std::vec::Vec;
 
-fn main(){
+fn main() {
   let vec = inp::parse_file("inputs/day07.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));
@@ -25,16 +25,18 @@ fn test_recursive(target: i64, nums: &Vec<i64>, useor: bool) -> bool {
   let mut mulvec = nums[..nums.len() - 2].to_vec();
   mulvec.push(mulresult);
   if useor {
-    let orresult = (num1.to_string() + &num2.to_string()).parse::<i64>().unwrap();
+    let orresult = (num1.to_string() + &num2.to_string())
+      .parse::<i64>()
+      .unwrap();
     let mut orvec = nums[..nums.len() - 2].to_vec();
     orvec.push(orresult);
-    return test_recursive(target, &addvec, true) || 
-           test_recursive(target, &mulvec, true) || 
-           test_recursive(target, &orvec, true);
+    return test_recursive(target, &addvec, true)
+      || test_recursive(target, &mulvec, true)
+      || test_recursive(target, &orvec, true);
   }
 
-  test_recursive(target, &addvec, false) || 
-  test_recursive(target, &mulvec, false)
+  test_recursive(target, &addvec, false)
+    || test_recursive(target, &mulvec, false)
 }
 
 // Solution for part 1
@@ -43,7 +45,10 @@ fn solve_part1(input: &Vec<String>) -> i64 {
   for line in input {
     let split = line.split(": ").collect::<Vec<_>>();
     let test_value = split[0].parse::<i64>().unwrap();
-    let mut numbers = split[1].split(" ").map(|x| x.parse::<i64>().unwrap()).collect::<Vec<_>>();
+    let mut numbers = split[1]
+      .split(" ")
+      .map(|x| x.parse::<i64>().unwrap())
+      .collect::<Vec<_>>();
     numbers.reverse();
     if test_recursive(test_value, &numbers, false) {
       total_calibartion_result += test_value;
@@ -58,7 +63,10 @@ fn solve_part2(input: &Vec<String>) -> i64 {
   for line in input {
     let split = line.split(": ").collect::<Vec<_>>();
     let test_value = split[0].parse::<i64>().unwrap();
-    let mut numbers = split[1].split(" ").map(|x| x.parse::<i64>().unwrap()).collect::<Vec<_>>();
+    let mut numbers = split[1]
+      .split(" ")
+      .map(|x| x.parse::<i64>().unwrap())
+      .collect::<Vec<_>>();
     numbers.reverse();
     if test_recursive(test_value, &numbers, true) {
       total_calibartion_result += test_value;
@@ -72,7 +80,13 @@ mod day07_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(3749, solve_part1(&inp::parse_file("test_inputs/day07_test.txt")));
-    assert_eq!(11387, solve_part2(&inp::parse_file("test_inputs/day07_test.txt")));
+    assert_eq!(
+      3749,
+      solve_part1(&inp::parse_file("test_inputs/day07_test.txt"))
+    );
+    assert_eq!(
+      11387,
+      solve_part2(&inp::parse_file("test_inputs/day07_test.txt"))
+    );
   }
 }

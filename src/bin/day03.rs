@@ -1,7 +1,7 @@
 use advent_of_code_2024::inp;
 use std::vec::Vec;
 
-fn main(){
+fn main() {
   let vec = inp::parse_file("inputs/day03.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));
@@ -20,17 +20,21 @@ fn step_through_after_mul(line: &str) -> i32 {
   for &character in &characters[1..] {
     if !character.is_numeric() {
       if character == ',' {
-        if finished_num1 { return 0; }
+        if finished_num1 {
+          return 0;
+        }
         match num1_string.iter().collect::<String>().parse::<i32>() {
           Ok(value) => num1 = value,
-          _=> return 0 
+          _ => return 0,
         }
         finished_num1 = true;
       } else if character == ')' {
-        if !finished_num1 { return 0; }
+        if !finished_num1 {
+          return 0;
+        }
         match num2_string.iter().collect::<String>().parse::<i32>() {
           Ok(value) => return num1 * value,
-          _=> return 0 
+          _ => return 0,
         }
       } else {
         return 0;
@@ -87,7 +91,13 @@ mod day03_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(161, solve_part1(&inp::parse_file("test_inputs/day03_test1.txt")));
-    assert_eq!(48, solve_part2(&inp::parse_file("test_inputs/day03_test2.txt")));
+    assert_eq!(
+      161,
+      solve_part1(&inp::parse_file("test_inputs/day03_test1.txt"))
+    );
+    assert_eq!(
+      48,
+      solve_part2(&inp::parse_file("test_inputs/day03_test2.txt"))
+    );
   }
 }

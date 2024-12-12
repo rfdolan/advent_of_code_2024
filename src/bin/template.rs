@@ -1,7 +1,7 @@
 use advent_of_code_2024::inp;
 use std::vec::Vec;
 
-fn main(){
+fn main() {
   let vec = inp::parse_file("inputs/xxx.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));

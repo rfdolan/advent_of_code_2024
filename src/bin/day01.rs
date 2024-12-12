@@ -1,8 +1,8 @@
 use advent_of_code_2024::inp;
-use std::vec::Vec;
 use std::collections::HashMap;
+use std::vec::Vec;
 
-fn main(){
+fn main() {
   let vec = inp::parse_file("inputs/day01.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));
@@ -36,7 +36,7 @@ fn solve_part2(input: &Vec<String>) -> i32 {
   for item in left_nums {
     match list_2_map.get(&item) {
       Some(val) => similarity_score += item * val,
-      None => ()
+      None => (),
     }
   }
   similarity_score
@@ -51,7 +51,6 @@ fn make_lists(input: &Vec<String>) -> (Vec<i32>, Vec<i32>) {
     right_nums.push(pair[pair.len() - 1].parse::<i32>().unwrap());
   }
   (left_nums, right_nums)
-
 }
 
 #[cfg(test)]
@@ -59,7 +58,13 @@ mod day01_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(11, solve_part1(&inp::parse_file("test_inputs/day01_test.txt")));
-    assert_eq!(31, solve_part2(&inp::parse_file("test_inputs/day01_test.txt")));
+    assert_eq!(
+      11,
+      solve_part1(&inp::parse_file("test_inputs/day01_test.txt"))
+    );
+    assert_eq!(
+      31,
+      solve_part2(&inp::parse_file("test_inputs/day01_test.txt"))
+    );
   }
 }

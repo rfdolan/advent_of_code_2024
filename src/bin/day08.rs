@@ -1,9 +1,9 @@
 use advent_of_code_2024::{inp, point::Point};
-use std::vec::Vec;
-use std::collections::{HashMap, HashSet};
 use std::collections::hash_map::Entry;
+use std::collections::{HashMap, HashSet};
+use std::vec::Vec;
 
-fn main(){
+fn main() {
   let vec = inp::parse_file("inputs/day08.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));
@@ -14,12 +14,14 @@ fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point>> {
   let mut antennas: HashMap<char, Vec<Point>> = HashMap::new();
   for (y, line) in input.iter().enumerate() {
     for (x, character) in line.chars().enumerate() {
-      if character == '.' { continue;}
-      let point = Point::new( x as i32, y as i32);
+      if character == '.' {
+        continue;
+      }
+      let point = Point::new(x as i32, y as i32);
       match antennas.entry(character) {
         Entry::Occupied(mut entry) => entry.get_mut().push(point),
         Entry::Vacant(entry) => {
-            entry.insert(vec![point]);
+          entry.insert(vec![point]);
         }
       }
     }
@@ -27,15 +29,22 @@ fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point>> {
   antennas
 }
 
-fn create_antinodes(antennas: &Vec<Point>, anodes: &mut HashSet<Point>, gridsize: (i32, i32))  {
-  for (i1, &point1) in antennas.iter().enumerate(){
-    for &point2 in &antennas[i1+1..]{
+fn create_antinodes(
+  antennas: &Vec<Point>,
+  anodes: &mut HashSet<Point>,
+  gridsize: (i32, i32),
+) {
+  for (i1, &point1) in antennas.iter().enumerate() {
+    for &point2 in &antennas[i1 + 1..] {
       let diff = point1 - point2;
-      let spots = vec![point1+diff, point2+diff, point1-diff, point2-diff];
+      let spots =
+        vec![point1 + diff, point2 + diff, point1 - diff, point2 - diff];
       for spot in spots {
-        if spot != point1 && spot != point2 &&
-        (0..gridsize.0).contains(&spot.x) &&
-        (0..gridsize.1).contains(&spot.y) {
+        if spot != point1
+          && spot != point2
+          && (0..gridsize.0).contains(&spot.x)
+          && (0..gridsize.1).contains(&spot.y)
+        {
           anodes.insert(spot);
         }
       }
@@ -55,16 +64,20 @@ fn solve_part1(input: &Vec<String>) -> i32 {
   anodes.len() as i32
 }
 
-fn create_antinodes2(antennas: &Vec<Point>, anodes: &mut HashSet<Point>, gridsize: (i32, i32))  {
-  for (i1, &point1) in antennas.iter().enumerate(){
-    for &point2 in &antennas[i1+1..]{
+fn create_antinodes2(
+  antennas: &Vec<Point>,
+  anodes: &mut HashSet<Point>,
+  gridsize: (i32, i32),
+) {
+  for (i1, &point1) in antennas.iter().enumerate() {
+    for &point2 in &antennas[i1 + 1..] {
       let diff = point1 - point2;
-      let mut it = point1-diff;
+      let mut it = point1 - diff;
       while (0..gridsize.0).contains(&it.x) && (0..gridsize.1).contains(&it.y) {
         anodes.insert(it);
         it = it - diff;
       }
-      it = point1+diff;
+      it = point1 + diff;
       while (0..gridsize.0).contains(&it.x) && (0..gridsize.1).contains(&it.y) {
         anodes.insert(it);
         it = it + diff;
@@ -91,7 +104,13 @@ mod day08_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(14, solve_part1(&inp::parse_file("test_inputs/day08_test.txt")));
-    assert_eq!(34, solve_part2(&inp::parse_file("test_inputs/day08_test.txt")));
+    assert_eq!(
+      14,
+      solve_part1(&inp::parse_file("test_inputs/day08_test.txt"))
+    );
+    assert_eq!(
+      34,
+      solve_part2(&inp::parse_file("test_inputs/day08_test.txt"))
+    );
   }
 }
