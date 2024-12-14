@@ -11,7 +11,9 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
-fn parse_input(input: &Vec<String>) -> (Vec<Point<i32>>, HashMap<Point<i32>, i32>) {
+fn parse_input(
+  input: &Vec<String>,
+) -> (Vec<Point<i32>>, HashMap<Point<i32>, i32>) {
   let mut map = HashMap::new();
   let mut trailheads = Vec::new();
   for (y, line) in input.iter().enumerate() {

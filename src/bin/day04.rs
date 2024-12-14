@@ -75,7 +75,10 @@ fn solve_part1(input: &Vec<String>) -> i32 {
   total_xmas
 }
 
-fn is_x_mas(map: &HashMap<Point<i32>, char>, start: &Point<i32>) -> Option<bool> {
+fn is_x_mas(
+  map: &HashMap<Point<i32>, char>,
+  start: &Point<i32>,
+) -> Option<bool> {
   let upleft = map.get(&(*start + Point::new(-1, -1)))?;
   let upright = map.get(&(*start + Point::new(1, -1)))?;
   let downleft = map.get(&(*start + Point::new(-1, 1)))?;

@@ -1,6 +1,6 @@
 use advent_of_code_2024::{inp, point::Point};
-use std::vec::Vec;
 use nalgebra::{Matrix2, Matrix2x1};
+use std::vec::Vec;
 
 const PART2_FUDGE: i64 = 10000000000000;
 
@@ -17,24 +17,34 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
+fn is_nearly_int(val: f64, tolerance: f64) -> bool {
+  (val - val.round()).abs() < tolerance
+}
+
 fn get_min_tokens(machine: &Machine) -> i64 {
-  let a = Matrix2::new(machine.button_a.x as f64, machine.button_b.x as f64, machine.button_a.y as f64, machine.button_b.y as f64);
+  let a = Matrix2::new(
+    machine.button_a.x as f64,
+    machine.button_b.x as f64,
+    machine.button_a.y as f64,
+    machine.button_b.y as f64,
+  );
   let b = Matrix2x1::new(machine.target.x as f64, machine.target.y as f64);
   match a.lu().solve(&b) {
     Some(solution) => {
-      //println!("{:?}", solution); 
-      let adiff = solution[0].round() as i64 as f64 - solution[0];
-      let bdiff = solution[1].round() as i64 as f64 - solution[1];
-      if adiff.abs() > 0.001 || bdiff.abs() > 0.001 {
+      //println!("{:?}", solution);
+      if !is_nearly_int(solution[0], 0.001)
+        || !is_nearly_int(solution[1], 0.001)
+      {
         return 0;
       }
-      return 3* solution[0].round() as i64 + solution[1].round() as i64;
-    },
-    None => return 0
+      return 3 * solution[0].round() as i64 + solution[1].round() as i64;
+    }
+    None => return 0,
   }
 }
 
 fn get_machines(input: &Vec<String>) -> Vec<Machine> {
+  // You weren't supposed to look here buddy, keep scrolling
   let mut i = 0;
   let mut machines = Vec::new();
   while i < input.len() {
@@ -44,13 +54,13 @@ fn get_machines(input: &Vec<String>) -> Vec<Machine> {
       .map(|x| x.parse::<i64>().unwrap())
       .collect::<Vec<i64>>();
     let button_a = Point::new(vals[0], vals[1]);
-    let vals = input[i+1]
+    let vals = input[i + 1]
       .split(",")
       .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
       .map(|x| x.parse::<i64>().unwrap())
       .collect::<Vec<i64>>();
     let button_b = Point::new(vals[0], vals[1]);
-    let vals = input[i+2]
+    let vals = input[i + 2]
       .split(",")
       .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
       .map(|x| x.parse::<i64>().unwrap())
@@ -65,6 +75,7 @@ fn get_machines(input: &Vec<String>) -> Vec<Machine> {
   }
   machines
 }
+
 // Solution for part 1
 fn solve_part1(input: &Vec<String>) -> i64 {
   get_machines(input)
@@ -76,9 +87,13 @@ fn solve_part1(input: &Vec<String>) -> i64 {
 fn solve_part2(input: &Vec<String>) -> i64 {
   let mut machines = get_machines(input);
   for machine in machines.iter_mut() {
-    machine.target = Point::new(machine.target.x + PART2_FUDGE, machine.target.y + PART2_FUDGE);
+    machine.target = Point::new(
+      machine.target.x + PART2_FUDGE,
+      machine.target.y + PART2_FUDGE,
+    );
   }
-  machines.iter()
+  machines
+    .iter()
     .fold(0, |acc, machine| get_min_tokens(&machine) + acc)
 }
 
