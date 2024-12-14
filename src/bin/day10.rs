@@ -11,7 +11,7 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
-fn parse_input(input: &Vec<String>) -> (Vec<Point>, HashMap<Point, i32>) {
+fn parse_input(input: &Vec<String>) -> (Vec<Point<i32>>, HashMap<Point<i32>, i32>) {
   let mut map = HashMap::new();
   let mut trailheads = Vec::new();
   for (y, line) in input.iter().enumerate() {
@@ -30,7 +30,7 @@ fn parse_input(input: &Vec<String>) -> (Vec<Point>, HashMap<Point, i32>) {
   (trailheads, map)
 }
 
-fn get_score(trailhead: &Point, map: &HashMap<Point, i32>) -> i32 {
+fn get_score(trailhead: &Point<i32>, map: &HashMap<Point<i32>, i32>) -> i32 {
   let mut score = 0;
   let mut visited = HashSet::new();
   let mut curr_node = *trailhead;
@@ -61,7 +61,7 @@ fn get_score(trailhead: &Point, map: &HashMap<Point, i32>) -> i32 {
   }
 }
 
-fn get_score2(curr_point: &Point, map: &HashMap<Point, i32>) -> i32 {
+fn get_score2(curr_point: &Point<i32>, map: &HashMap<Point<i32>, i32>) -> i32 {
   let mut total = 0;
   if map[&curr_point] == 9 {
     return 1;

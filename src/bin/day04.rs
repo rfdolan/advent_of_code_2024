@@ -2,7 +2,7 @@ use advent_of_code_2024::{inp, point::Point};
 use std::collections::HashMap;
 use std::vec::Vec;
 
-const DIRECTIONS: [Point; 8] = [
+const DIRECTIONS: [Point<i32>; 8] = [
   Point { x: 0, y: 1 },
   Point { x: 0, y: -1 },
   Point { x: 1, y: 1 },
@@ -21,7 +21,7 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
-fn build_map(input: &Vec<String>) -> (HashMap<Point, char>, usize) {
+fn build_map(input: &Vec<String>) -> (HashMap<Point<i32>, char>, usize) {
   let mut map = HashMap::new();
   let mut xsize = 0;
   for (y, line) in input.iter().enumerate() {
@@ -36,9 +36,9 @@ fn build_map(input: &Vec<String>) -> (HashMap<Point, char>, usize) {
 }
 
 fn find_xmas_in_direction(
-  map: &HashMap<Point, char>,
-  start: &Point,
-  direction: &Point,
+  map: &HashMap<Point<i32>, char>,
+  start: &Point<i32>,
+  direction: &Point<i32>,
 ) -> bool {
   let mut curr_point = *start + *direction;
   for letter in 1..XMAS.len() {
@@ -75,7 +75,7 @@ fn solve_part1(input: &Vec<String>) -> i32 {
   total_xmas
 }
 
-fn is_x_mas(map: &HashMap<Point, char>, start: &Point) -> Option<bool> {
+fn is_x_mas(map: &HashMap<Point<i32>, char>, start: &Point<i32>) -> Option<bool> {
   let upleft = map.get(&(*start + Point::new(-1, -1)))?;
   let upright = map.get(&(*start + Point::new(1, -1)))?;
   let downleft = map.get(&(*start + Point::new(-1, 1)))?;

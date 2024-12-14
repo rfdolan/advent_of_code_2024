@@ -10,8 +10,8 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
-fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point>> {
-  let mut antennas: HashMap<char, Vec<Point>> = HashMap::new();
+fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point<i32>>> {
+  let mut antennas: HashMap<char, Vec<Point<i32>>> = HashMap::new();
   for (y, line) in input.iter().enumerate() {
     for (x, character) in line.chars().enumerate() {
       if character == '.' {
@@ -30,8 +30,8 @@ fn get_antennas(input: &Vec<String>) -> HashMap<char, Vec<Point>> {
 }
 
 fn create_antinodes(
-  antennas: &Vec<Point>,
-  anodes: &mut HashSet<Point>,
+  antennas: &Vec<Point<i32>>,
+  anodes: &mut HashSet<Point<i32>>,
   gridsize: (i32, i32),
 ) {
   for (i1, &point1) in antennas.iter().enumerate() {
@@ -65,8 +65,8 @@ fn solve_part1(input: &Vec<String>) -> i32 {
 }
 
 fn create_antinodes2(
-  antennas: &Vec<Point>,
-  anodes: &mut HashSet<Point>,
+  antennas: &Vec<Point<i32>>,
+  anodes: &mut HashSet<Point<i32>>,
   gridsize: (i32, i32),
 ) {
   for (i1, &point1) in antennas.iter().enumerate() {

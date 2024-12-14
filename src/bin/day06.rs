@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use std::thread;
 use std::vec::Vec;
 
-const DIRECTIONS: [Point; 4] = [
+const DIRECTIONS: [Point<i32>; 4] = [
   Point { x: 0, y: -1 },
   Point { x: 1, y: 0 },
   Point { x: 0, y: 1 },
@@ -23,7 +23,7 @@ fn main() {
   println!("Part 2: {}", solve_part2(&vec));
 }
 
-fn get_obstacles(input: &Vec<String>) -> (HashSet<Point>, Point) {
+fn get_obstacles(input: &Vec<String>) -> (HashSet<Point<i32>>, Point<i32>) {
   let mut guard_position = Point::new(-1, -1);
   let mut obstacles = HashSet::new();
   for (y, line) in input.iter().enumerate() {
@@ -40,8 +40,8 @@ fn get_obstacles(input: &Vec<String>) -> (HashSet<Point>, Point) {
 }
 
 fn do_patrol(
-  obstacles: &HashSet<Point>,
-  start_position: &Point,
+  obstacles: &HashSet<Point<i32>>,
+  start_position: &Point<i32>,
   grid_size: (i32, i32),
 ) -> GuardResult {
   let mut visited = HashSet::new();
@@ -75,10 +75,10 @@ fn do_patrol(
 }
 
 fn get_path(
-  obstacles: &HashSet<Point>,
+  obstacles: &HashSet<Point<i32>>,
   size: (i32, i32),
-  guard_position: &Point,
-) -> HashSet<Point> {
+  guard_position: &Point<i32>,
+) -> HashSet<Point<i32>> {
   let mut visited = HashSet::new();
   let mut guard_position = *guard_position;
   visited.insert(guard_position);

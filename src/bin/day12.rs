@@ -11,9 +11,9 @@ fn main() {
 
 fn get_region(
   point: char,
-  start: &Point,
-  all_points: &HashMap<Point, char>,
-) -> HashSet<Point> {
+  start: &Point<i32>,
+  all_points: &HashMap<Point<i32>, char>,
+) -> HashSet<Point<i32>> {
   let mut region = HashSet::new();
   let mut to_check = Vec::new();
   to_check.push(start.clone());
@@ -33,7 +33,7 @@ fn get_region(
   region
 }
 
-fn get_perimeter(region: &HashSet<Point>) -> i32 {
+fn get_perimeter(region: &HashSet<Point<i32>>) -> i32 {
   let mut perimeter = 0;
   for point in region {
     let mut num_neighbors = 0;
@@ -47,7 +47,7 @@ fn get_perimeter(region: &HashSet<Point>) -> i32 {
   perimeter
 }
 
-fn get_all_regions(input: &Vec<String>) -> Vec<HashSet<Point>> {
+fn get_all_regions(input: &Vec<String>) -> Vec<HashSet<Point<i32>>> {
   // Parse data
   let mut all_points = HashMap::new();
   for (y, line) in input.iter().enumerate() {
@@ -59,7 +59,7 @@ fn get_all_regions(input: &Vec<String>) -> Vec<HashSet<Point>> {
   // Collect into a vector of regions
   let all_points = all_points;
   let mut regions = Vec::new();
-  let mut accounted_for: HashSet<Point> = HashSet::new();
+  let mut accounted_for: HashSet<Point<i32>> = HashSet::new();
   for point in &all_points {
     if !accounted_for.contains(&point.0) {
       let region = get_region(*point.1, &point.0, &all_points);
@@ -83,7 +83,7 @@ fn solve_part1(input: &Vec<String>) -> i32 {
 
 // The number of sides is equal to the number of corners, which are easier to
 // find.
-fn get_num_sides(region: &HashSet<Point>) -> i32 {
+fn get_num_sides(region: &HashSet<Point<i32>>) -> i32 {
   let start = region.iter().next().unwrap().clone();
   let mut corners = 0;
   let mut to_visit = Vec::with_capacity(region.len());
