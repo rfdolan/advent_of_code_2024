@@ -49,15 +49,13 @@ fn solve_part1(input: &Vec<String>, gridsize: Point<i32>) -> i32 {
       vel: Point::new(captures[2], captures[3]),
     });
   }
-
-  for x in 0..PART1_TURNS {
-    for robot in robots.iter_mut() {
-      robot.pos = Point::new(
-        (robot.pos.x + robot.vel.x).rem_euclid(gridsize.x),
-        (robot.pos.y + robot.vel.y).rem_euclid(gridsize.y),
-      );
-    }
+  for robot in robots.iter_mut() {
+    robot.pos = Point::new(
+      (robot.pos.x + robot.vel.x * PART1_TURNS).rem_euclid(gridsize.x),
+      (robot.pos.y + robot.vel.y * PART1_TURNS).rem_euclid(gridsize.y),
+    );
   }
+
   get_robots_in_quadrant(&robots, 0..gridsize.x / 2, 0..gridsize.y / 2)
     * get_robots_in_quadrant(
       &robots,
