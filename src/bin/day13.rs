@@ -43,33 +43,23 @@ fn get_min_tokens(machine: &Machine) -> i64 {
   }
 }
 
+fn get_nums_from_line(line: &String) -> Point<i64> {
+  let vals = line
+    .split(",")
+    .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
+    .map(|x| x.parse::<i64>().unwrap())
+    .collect::<Vec<i64>>();
+  Point::new(vals[0], vals[1])
+}
+
 fn get_machines(input: &Vec<String>) -> Vec<Machine> {
-  // You weren't supposed to look here buddy, keep scrolling
   let mut i = 0;
   let mut machines = Vec::new();
   while i < input.len() {
-    let vals = input[i]
-      .split(",")
-      .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
-      .map(|x| x.parse::<i64>().unwrap())
-      .collect::<Vec<i64>>();
-    let button_a = Point::new(vals[0], vals[1]);
-    let vals = input[i + 1]
-      .split(",")
-      .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
-      .map(|x| x.parse::<i64>().unwrap())
-      .collect::<Vec<i64>>();
-    let button_b = Point::new(vals[0], vals[1]);
-    let vals = input[i + 2]
-      .split(",")
-      .map(|x| x.chars().filter(|c| c.is_digit(10)).collect::<String>())
-      .map(|x| x.parse::<i64>().unwrap())
-      .collect::<Vec<i64>>();
-    let target = Point::new(vals[0], vals[1]);
     machines.push(Machine {
-      button_a,
-      button_b,
-      target,
+      button_a: get_nums_from_line(&input[i]),
+      button_b: get_nums_from_line(&input[i + 1]),
+      target: get_nums_from_line(&input[i + 2]),
     });
     i += 4;
   }
