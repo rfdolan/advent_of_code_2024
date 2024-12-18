@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, Mul};
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Point<T> {
@@ -11,10 +11,14 @@ impl<T> Point<T> {
     Point { x, y }
   }
 
-  pub fn zero() -> Point<T> 
-  where T: From<i32>
+  pub fn zero() -> Point<T>
+  where
+    T: From<i32>,
   {
-    Point { x:T::from(0), y:T::from(0) }
+    Point {
+      x: T::from(0),
+      y: T::from(0),
+    }
   }
 
   pub fn new_from_tuple(vals: (T, T)) -> Point<T> {

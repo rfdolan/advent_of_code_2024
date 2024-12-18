@@ -23,6 +23,9 @@ mod dayxxx_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(0, solve_part1(&inp::parse_file("test_inputs/dayxxx_test.txt")));
+    assert_eq!(
+      0,
+      solve_part1(&inp::parse_file("test_inputs/dayxxx_test.txt"))
+    );
   }
 }
