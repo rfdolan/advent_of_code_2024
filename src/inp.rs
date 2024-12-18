@@ -12,6 +12,8 @@ pub fn parse_file(name: &str) -> Vec<String> {
         vec.push(ip);
       }
     }
+  } else {
+    panic!("Opening file {} failed!", name);
   }
   vec
 }

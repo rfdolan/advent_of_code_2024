@@ -2,7 +2,7 @@ use advent_of_code_2024::inp;
 use std::vec::Vec;
 
 fn main() {
-  let vec = inp::parse_file("inputs/xxx.txt");
+  let vec = inp::parse_file("inputs/dayxxx.txt");
   // Put the code to do the thing here
   println!("Part 1: {}", solve_part1(&vec));
   println!("Part 2: {}", solve_part2(&vec));
@@ -23,6 +23,6 @@ mod dayxxx_tests {
   use super::*;
   #[test]
   fn test() {
-    assert_eq!(0, solve_part1(&inp::parse_file("test_inputs/xxx_test.txt")));
+    assert_eq!(0, solve_part1(&inp::parse_file("test_inputs/dayxxx_test.txt")));
   }
 }

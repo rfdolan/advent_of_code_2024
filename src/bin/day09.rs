@@ -82,7 +82,7 @@ struct Thing {
   is_space: bool,
 }
 
-fn printfiles(files: &Vec<Thing>) {
+fn _printfiles(files: &Vec<Thing>) {
   for thing in files {
     let mut i = thing.size;
     while i > 0 {
@@ -179,12 +179,10 @@ mod day09_tests {
   use super::*;
   #[test]
   fn test() {
-    /*
     assert_eq!(
       1928,
       solve_part1(&inp::parse_file("test_inputs/day09_test.txt"))
     );
-    */
     assert_eq!(
       2858,
       solve_part2(&inp::parse_file("test_inputs/day09_test.txt"))
