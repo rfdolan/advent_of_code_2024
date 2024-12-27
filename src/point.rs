@@ -1,5 +1,6 @@
 use std::ops::{Add, Mul, Sub};
 
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Point<T> {
   pub x: T,
@@ -54,6 +55,14 @@ impl<T> Point<T> {
       Point::new(self.x, self.y - T::from(1)),
     ]
   }
+  pub fn manhattan_dist(self, other: Self) -> i32 
+  where 
+  T: Add<T, Output = T> + Sub<T, Output = T>,
+  i32: From<T>
+  {
+    i32::from(self.x - other.x).abs() + i32::from(self.y - other.y).abs()
+  }
+
 }
 
 impl<T> Add for Point<T>
@@ -94,3 +103,5 @@ where
     }
   }
 }
+
+pub const CARDINAL_DIRS: [Point<i32>; 4] = [Point{x: 1, y:0}, Point{x: -1, y:0}, Point{x:0, y:1}, Point{x:0, y:-1} ];
